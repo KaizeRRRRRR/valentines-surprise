@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day!</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #b3003b, #ff758c);
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: relative;
+        }
+        .container {
+            position: relative;
+            width: 80%;
+            max-width: 500px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: black;
+            display: none;
+            padding: 30px;
+            transition: transform 0.5s ease-in-out;
+        }
+        h1 {
+            color: #ff4d6d;
+            font-size: 36px;
+        }
+        p {
+            font-size: 20px;
+            color: white;
+        }
+        video {
+            width: 300px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            margin-bottom: 20px;
+        }
+        .message {
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        .mail {
+            width: 200px;
+            cursor: pointer;
+        }
+        .close-btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #d63384;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <img src="mail.png" alt="Open Letter" class="mail" onclick="openLetter()">
+    
+    <div class="container" id="letterContainer">
+        <video id="bouquetVideo" playsinline muted>
+            <source src="flowers.mp4" type="video/mp4">
+        </video>
+        <div class="message">
+            <h1>💖 Happy Valentine's Day, My Keira! 💖</h1>
+            <p>My Kei,</p>
+            <p>You bring joy and happiness into my life every day.</p>
+            <p>This flower is just a small symbol of my love for you. ❤️</p>
+            <p>Forever Yours,</p>
+            <p><strong>Your Cutieeee</strong></p>
+            <button class="close-btn" onclick="closeLetter()">Close</button>
+        </div>
+    </div>
+    
+    <audio id="bg-music">
+        <source src="love_song.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const audio = document.getElementById("bg-music");
+        const video = document.getElementById("bouquetVideo");
+        const letterContainer = document.getElementById("letterContainer");
+        const mail = document.querySelector(".mail");
+
+        let loopInterval;
+
+        function loopMiddlePart() {
+            video.currentTime = 3.2;
+            video.play();
+            loopInterval = setInterval(() => {
+                video.currentTime = 3.2; // Loop 3.2 - 4.2 seconds continuously
+                video.play();
+            }, 1000);
+        }
+
+        function openLetter() {
+            mail.style.display = "none";
+            letterContainer.style.display = "flex";
+            video.style.display = "block";
+            video.currentTime = 0;
+            video.play();
+
+            // Play first 4.2 seconds of the video
+            setTimeout(() => {
+                video.pause();
+                loopMiddlePart();
+            }, 4200);
+
+            // Start music at 50 seconds
+            audio.currentTime = 50;
+            audio.play();
+
+            // Stop music exactly at 22.5s
+            setTimeout(() => {
+                audio.pause();
+                audio.currentTime = 0;
+            }, 22500);
+
+            // At 19.5s into music (last 3s), play 5-7s of video
+            setTimeout(() => {
+                clearInterval(loopInterval);
+                video.loop = false;
+                video.currentTime = 5;
+                video.play();
+            }, 19500);
+
+            // Hide video after music ends (22.5s total now)
+            setTimeout(() => {
+                video.style.display = "none";
+            }, 22500);
+        }
+
+        function closeLetter() {
+            mail.style.display = "block";
+            letterContainer.style.display = "none";
+            video.style.display = "none";
+            audio.pause();
+            audio.currentTime = 0;
+            clearInterval(loopInterval);
+        }
+    </script>
+</body>
+</html>
